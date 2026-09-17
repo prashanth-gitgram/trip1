@@ -89,6 +89,8 @@ export interface DaySummary {
   date: string;
   title: string;
   subtitle: string;
+  /** Clear route corridor label shown in the itinerary panel. */
+  routeLabel: string;
   notes: string;
   totalDistanceKm: number;
   totalDriveTimeMin: number;

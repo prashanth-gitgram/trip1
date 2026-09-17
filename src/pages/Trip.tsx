@@ -158,11 +158,22 @@ export function TripPage() {
           <div className="rounded-2xl bg-surface/80 p-4 ring-1 ring-white/5">
             <h2 className="font-display text-xl text-cream">
               {day === 'full'
-                ? 'Full trip route'
+                ? 'Full trip loop'
                 : daySummary?.title ?? `Day ${day}`}
             </h2>
-            {day !== 'full' && daySummary && (
-              <p className="mt-1 text-sm text-muted">{daySummary.subtitle}</p>
+            {day === 'full' ? (
+              <p className="mt-1 text-sm text-muted">
+                Outbound — Erode / Palani · Return — Dindigul / Salem
+              </p>
+            ) : (
+              daySummary && (
+                <>
+                  <p className="mt-1 text-sm font-semibold text-moss-bright">
+                    {daySummary.routeLabel}
+                  </p>
+                  <p className="mt-0.5 text-sm text-muted">{daySummary.subtitle}</p>
+                </>
+              )
             )}
             <div className="mt-3 flex flex-wrap gap-3 text-sm">
               <span className="rounded-lg bg-ink/50 px-2.5 py-1 text-sand">

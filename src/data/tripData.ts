@@ -1,11 +1,11 @@
 import type { ChecklistItem, Stay, TimelineItem, TripMeta } from '../types/trip';
 import { PLACES } from './places';
-import { DAY_SUMMARIES, fullTripTotals } from './routes';
+import { DAY_SUMMARIES, fullTripTotals, ROUTE_DATASETS } from './routes';
 
 export const TRIP_META: TripMeta = {
   title: 'Kodaikanal Backpacking Trip',
   subtitle:
-    'Bangalore → Poombarai → Kookal → Mannavanur → Kodaikanal → Bangalore',
+    'Bangalore → Mannavanur → Kookal → Poombarai → Kodaikanal → Bangalore',
   datesLabel: 'OCT 1–4, 2026',
   startDate: '2026-10-01',
   endDate: '2026-10-04',
@@ -16,18 +16,20 @@ export const TRIP_META: TripMeta = {
 
 export const STAYS: Stay[] = [
   {
-    id: 'stay-poombarai',
-    name: 'Poombarai',
-    locationId: 'd1-poombarai-stay',
+    id: 'stay-apm-mannavanur',
+    name: 'APM Resort, Mannavanur',
+    locationId: 'd1-apm-resort',
     nights: ['2026-10-01', '2026-10-02'],
-    notes: 'Nights of Oct 1 and Oct 2. Update lodging pin in COORDINATE_CONFIG.',
+    notes:
+      'Nights of Oct 1 and Oct 2. Update COORDINATE_CONFIG.apm_resort to the exact pin.',
   },
   {
-    id: 'stay-kodaikanal',
-    name: 'Kodaikanal',
-    locationId: 'd3-kodaikanal-stay',
+    id: 'stay-trippr-kodaikanal',
+    name: 'Trippr Kodaikanal Backpacker Hostel',
+    locationId: 'd3-trippr-stay',
     nights: ['2026-10-03'],
-    notes: 'Night of Oct 3. Update lodging pin in COORDINATE_CONFIG.',
+    notes:
+      'Night of Oct 3. Update COORDINATE_CONFIG.trippr_hostel to the exact pin.',
   },
 ];
 
@@ -38,85 +40,85 @@ export const DEFAULT_TIMELINE: TimelineItem[] = [
     day: 1,
     timeLabel: '04:00',
     title: 'Leave Bangalore',
-    description: 'Early start to beat traffic and reach hills with daylight.',
+    description: 'Outbound — Erode / Palani Route. Early start.',
   },
   {
     id: 't1-2',
     day: 1,
     timeLabel: 'Morning',
-    title: 'Highway via Salem',
-    description: 'Fuel / stretch stops as needed.',
+    title: 'Hosur → Krishnagiri → Dharmapuri',
+    description: 'Fuel / stretch as needed. Not via Salem.',
   },
   {
     id: 't1-3',
     day: 1,
     timeLabel: 'Afternoon',
-    title: 'Climb toward Kodaikanal',
-    description: 'Batlagundu → ghat → pass through town toward Poombarai.',
+    title: 'Erode → Kangayam → Dharapuram → Palani',
+    description: 'Approach Mannavanur from the Palani side.',
   },
   {
     id: 't1-4',
     day: 1,
     timeLabel: 'Evening',
-    title: 'Poombarai arrive',
-    description: 'Viewpoint / temple if energy allows.',
+    title: 'Reach Mannavanur',
+    description: 'Arrive APM Resort with daylight if possible.',
   },
   {
     id: 't1-5',
     day: 1,
     timeLabel: 'Night',
-    title: 'Stay — Poombarai',
-    description: 'First night in the village.',
+    title: 'Stay — APM Resort',
+    description: 'First night at Mannavanur.',
   },
   // Day 2
   {
     id: 't2-1',
     day: 2,
     timeLabel: '08:00',
-    title: 'Leave Poombarai',
-    description: 'Start Kookal–Mannavanur loop.',
+    title: 'Leave APM Resort',
+    description: 'Local exploration day.',
   },
   {
     id: 't2-2',
     day: 2,
     timeLabel: 'Morning',
     title: 'Kookal',
-    description: 'Village, lake, and falls viewpoints.',
+    description: 'Village, lake, waterfall area — confirm water safety locally.',
   },
   {
     id: 't2-3',
     day: 2,
     timeLabel: 'Afternoon',
-    title: 'Mannavanur',
-    description: 'Lake and grasslands.',
+    title: 'Mannavanur lake & grasslands',
+    description: 'Optional Poombarai if time allows.',
   },
   {
     id: 't2-4',
     day: 2,
     timeLabel: 'Evening',
-    title: 'Return via Poondi',
-    description: 'Back to Poombarai before dark.',
+    title: 'Return to APM Resort',
+    description: 'Back before dark.',
   },
   {
     id: 't2-5',
     day: 2,
     timeLabel: 'Night',
-    title: 'Stay — Poombarai',
-    description: 'Second night.',
+    title: 'Stay — APM Resort',
+    description: 'Second night at Mannavanur.',
   },
   // Day 3
   {
     id: 't3-1',
     day: 3,
     timeLabel: '09:00',
-    title: 'Checkout Poombarai',
-    description: 'Drive toward Kodaikanal via Kilavarai.',
+    title: 'Checkout Mannavanur',
+    description: 'Drive via Poombarai toward Kodaikanal.',
   },
   {
     id: 't3-2',
     day: 3,
     timeLabel: 'Late morning',
-    title: 'Kodaikanal stay drop',
+    title: 'Trippr hostel drop',
     description: 'Leave bags, then head to Vattakanal.',
   },
   {
@@ -124,21 +126,21 @@ export const DEFAULT_TIMELINE: TimelineItem[] = [
     day: 3,
     timeLabel: 'Afternoon',
     title: 'Vattakanal & Dolphin’s Nose',
-    description: 'Trail time — confirm conditions locally.',
+    description: 'Focus day — confirm trail conditions locally.',
   },
   {
     id: 't3-4',
     day: 3,
     timeLabel: 'Evening',
-    title: 'Kodaikanal Lake',
-    description: 'Easy stroll / optional boat.',
+    title: 'Back to Kodaikanal',
+    description: 'Skip crowded attractions unless you want them.',
   },
   {
     id: 't3-5',
     day: 3,
     timeLabel: 'Night',
-    title: 'Stay — Kodaikanal',
-    description: 'Third night.',
+    title: 'Stay — Trippr Hostel',
+    description: 'Third night in Kodaikanal.',
   },
   // Day 4
   {
@@ -146,21 +148,21 @@ export const DEFAULT_TIMELINE: TimelineItem[] = [
     day: 4,
     timeLabel: '07:00',
     title: 'Leave Kodaikanal',
-    description: 'Descend ghats with buffer.',
+    description: 'Return — Dindigul / Salem Route. Descend ghats early.',
   },
   {
     id: 't4-2',
     day: 4,
     timeLabel: 'Morning',
     title: 'Batlagundu → Dindigul',
-    description: 'Fuel and meal stops.',
+    description: 'Fuel and meal stops. Not via Erode/Palani.',
   },
   {
     id: 't4-3',
     day: 4,
     timeLabel: 'Afternoon',
-    title: 'Salem corridor',
-    description: 'Long highway stretch.',
+    title: 'Salem → Krishnagiri → Hosur',
+    description: 'Loop return corridor.',
   },
   {
     id: 't4-4',
@@ -172,7 +174,6 @@ export const DEFAULT_TIMELINE: TimelineItem[] = [
 ];
 
 export const CHECKLIST_ITEMS: ChecklistItem[] = [
-  // Vehicle
   { id: 'v-fuel', category: 'vehicle', label: 'Fuel' },
   { id: 'v-tyre', category: 'vehicle', label: 'Tyre pressure' },
   { id: 'v-spare', category: 'vehicle', label: 'Spare tyre' },
@@ -180,7 +181,6 @@ export const CHECKLIST_ITEMS: ChecklistItem[] = [
   { id: 'v-tools', category: 'vehicle', label: 'Basic tools' },
   { id: 'v-powerbank', category: 'vehicle', label: 'Power bank' },
   { id: 'v-cable', category: 'vehicle', label: 'Phone charging cable' },
-  // Backpack
   { id: 'b-jacket', category: 'backpack', label: 'Jacket' },
   { id: 'b-rain', category: 'backpack', label: 'Rain protection' },
   { id: 'b-shoes', category: 'backpack', label: 'Shoes' },
@@ -190,7 +190,6 @@ export const CHECKLIST_ITEMS: ChecklistItem[] = [
   { id: 'b-firstaid', category: 'backpack', label: 'First-aid kit' },
   { id: 'b-id', category: 'backpack', label: 'ID' },
   { id: 'b-cash', category: 'backpack', label: 'Cash' },
-  // Before leaving
   { id: 'bl-offline', category: 'before_leaving', label: 'Download offline maps' },
   { id: 'bl-route', category: 'before_leaving', label: 'Download route' },
   { id: 'bl-stays', category: 'before_leaving', label: 'Save stays' },
@@ -213,10 +212,11 @@ export function getTripSnapshot() {
     meta: TRIP_META,
     stays: STAYS,
     daySummaries: DAY_SUMMARIES,
+    routeDatasets: ROUTE_DATASETS,
     stopCount: PLACES.length,
     totalDistanceKm: totals.distanceKm,
     totalDriveTimeMin: totals.driveTimeMin,
   };
 }
 
-export { PLACES, DAY_SUMMARIES };
+export { PLACES, DAY_SUMMARIES, ROUTE_DATASETS };

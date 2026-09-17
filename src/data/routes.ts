@@ -1,5 +1,14 @@
 import type { Coordinates, DaySummary, RouteSegment } from '../types/trip';
-import { getPlacesForDay, PLACES } from './places';
+import {
+  assertOutboundRoute,
+  assertReturnRoute,
+  getPlacesForDay,
+  PLACES,
+} from './places';
+
+assertOutboundRoute();
+assertReturnRoute();
+
 
 /** Earth radius in km */
 const R = 6371;
@@ -111,14 +120,55 @@ export function fullTripTotals(): {
   };
 }
 
+/** Named route corridors — keep outbound and return as separate datasets. */
+export const ROUTE_DATASETS = {
+  outbound: {
+    id: 'outbound' as const,
+    label: 'Outbound — Erode / Palani Route',
+    day: 1,
+    description:
+      'Bangalore → Hosur → Krishnagiri → Dharmapuri → Erode → Kangayam → Dharapuram → Palani → Mannavanur → APM Resort. No Salem/Dindigul.',
+  },
+  local: {
+    id: 'local' as const,
+    label: 'Local — Mannavanur / Kookal / Poombarai',
+    day: 2,
+    description:
+      'APM Resort base with Kookal, Mannavanur lake/grasslands, optional Poombarai.',
+  },
+  hills: {
+    id: 'hills' as const,
+    label: 'Hills — Poombarai / Vattakanal',
+    day: 3,
+    description:
+      'Mannavanur → Poombarai → Kodaikanal → Vattakanal → Dolphin’s Nose → Trippr Hostel.',
+  },
+  return: {
+    id: 'return' as const,
+    label: 'Return — Dindigul / Salem Route',
+    day: 4,
+    description:
+      'Kodaikanal → Batlagundu → Dindigul → Salem → Krishnagiri → Hosur → Bangalore. No Erode/Palani.',
+  },
+} as const;
+
+export function routeDatasetForDay(day: number | 'full') {
+  if (day === 1) return ROUTE_DATASETS.outbound;
+  if (day === 2) return ROUTE_DATASETS.local;
+  if (day === 3) return ROUTE_DATASETS.hills;
+  if (day === 4) return ROUTE_DATASETS.return;
+  return null;
+}
+
 export const DAY_SUMMARIES: DaySummary[] = [
   {
     day: 1,
     date: '2026-10-01',
-    title: 'Bangalore → Poombarai',
-    subtitle: 'Long highway day into the hills',
+    title: 'Bangalore → Mannavanur',
+    subtitle: 'Outbound via Erode / Palani',
+    routeLabel: ROUTE_DATASETS.outbound.label,
     notes:
-      'Leave before dawn. Fuel at Salem/Dindigul. Reach Poombarai with daylight for temple/viewpoint.',
+      'Leave before dawn. Outbound — Erode / Palani Route. Fuel at Erode/Palani. Do not go via Salem/Dindigul. Destination: APM Resort, Mannavanur.',
     ...(() => {
       const t = dayTotals(1);
       return {
@@ -130,10 +180,11 @@ export const DAY_SUMMARIES: DaySummary[] = [
   {
     day: 2,
     date: '2026-10-02',
-    title: 'Poombarai → Kookal → Mannavanur → Poombarai',
-    subtitle: 'Western loop day',
+    title: 'Mannavanur / Poombarai local exploration',
+    subtitle: 'Kookal loop from APM Resort',
+    routeLabel: ROUTE_DATASETS.local.label,
     notes:
-      'Hill roads only. Pack rain gear. Return before dark. Water entry unverified.',
+      'Base at APM Resort. Kookal village/lake/waterfall area, Mannavanur lake & grasslands, optional Poombarai. Water entry unverified — confirm locally.',
     ...(() => {
       const t = dayTotals(2);
       return {
@@ -145,10 +196,11 @@ export const DAY_SUMMARIES: DaySummary[] = [
   {
     day: 3,
     date: '2026-10-03',
-    title: 'Poombarai → Kodaikanal → Vattakanal',
-    subtitle: 'Move stay + trails',
+    title: 'Mannavanur → Kodaikanal',
+    subtitle: 'Poombarai transit + Vattakanal focus',
+    routeLabel: ROUTE_DATASETS.hills.label,
     notes:
-      'Checkout Poombarai, settle in Kodaikanal, then Vattakanal / Dolphin’s Nose / lake.',
+      'Checkout Mannavanur, brief Poombarai, settle at Trippr Kodaikanal Backpacker Hostel, then Vattakanal / Falls / Dolphin’s Nose. Skip crowded lake circuit unless wanted.',
     ...(() => {
       const t = dayTotals(3);
       return {
@@ -161,8 +213,10 @@ export const DAY_SUMMARIES: DaySummary[] = [
     day: 4,
     date: '2026-10-04',
     title: 'Kodaikanal → Bangalore',
-    subtitle: 'Return drive',
-    notes: 'Descend ghats early. Plan for city traffic on arrival.',
+    subtitle: 'Return via Dindigul / Salem',
+    routeLabel: ROUTE_DATASETS.return.label,
+    notes:
+      'Return — Dindigul / Salem Route. Loop home via Batlagundu → Dindigul → Salem → Krishnagiri → Hosur. Do not repeat Erode/Palani outbound.',
     ...(() => {
       const t = dayTotals(4);
       return {
@@ -224,7 +278,7 @@ export function tripBounds(padding = 0.15): {
   };
 }
 
-/** Tighter bbox around the Kodaikanal / Poombarai hill cluster for higher zoom tiles. */
+/** Tighter bbox around the Mannavanur / Poombarai / Kodaikanal hill cluster. */
 export function hillsBounds(padding = 0.08): {
   south: number;
   west: number;
